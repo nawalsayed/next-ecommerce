@@ -22,7 +22,9 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md px-6 py-3 flex items-center justify-between z-50">
       {/* Logo / Title */}
-      <div className="text-2xl font-bold text-pink-600">ShopSphere</div>
+      <Link href="/" className="text-2xl font-bold text-pink-600">
+        ShopSphere
+      </Link>
 
       {/* Links */}
       <div className="flex gap-8 text-gray-700 font-medium">
