@@ -8,33 +8,44 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, ArrowLeft } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import ApiState from "@/components/ApiState/ApiState";
+import type { Product } from "@/types/api";
 
 export default function CategoryProductsPage() {
   const { id } = useParams();
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [retry, setRetry] = useState(0);
   const { addToCart } = useCart();
 
   useEffect(() => {
     async function getProducts() {
       try {
+        setLoading(true);
+        setError(false);
         const res = await fetch(
           `https://ecommerce.routemisr.com/api/v1/products?category[in]=${id}`
         );
+        if (!res.ok) throw new Error("Unable to load category products");
         const data = await res.json();
+        if (!Array.isArray(data.data)) throw new Error("Unable to load category products");
         setProducts(data.data || []);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setError(true);
       } finally {
         setLoading(false);
       }
     }
     if (id) getProducts();
-  }, [id]);
+  }, [id, retry]);
 
   if (loading) {
     return <p className="text-center py-10">Loading products...</p>;
   }
+
+  if (error) return <ApiState message="We couldn’t load products in this category. Please try again." onRetry={() => setRetry((value) => value + 1)} />;
 
   if (products.length === 0) {
     return (
@@ -45,7 +56,7 @@ export default function CategoryProductsPage() {
         >
           <ArrowLeft className="w-4 h-4" /> Back to Categories
         </Link>
-        <p className="text-gray-500">No products found in this category.</p>
+        <ApiState message="This category doesn’t have any products yet." />
       </div>
     );
   }
@@ -66,10 +77,8 @@ export default function CategoryProductsPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <Card
-            key={product._id}
-            className="w-full shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition cursor-pointer"
-          >
+          <Card key={product._id} className="w-full shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition cursor-pointer">
+            <Link href={`/products/${product._id}`} className="block">
             {/* Product Image */}
             <div className="relative w-full h-52">
               <Image
@@ -92,6 +101,7 @@ export default function CategoryProductsPage() {
               <p className="text-sm text-gray-500">{product.category?.name}</p>
               <p className="mt-2 font-bold text-pink-600">{product.price} EGP</p>
             </CardContent>
+            </Link>
 
             {/* Footer */}
             <CardFooter className="p-4 pt-0">

@@ -15,6 +15,7 @@ export type CartItem = CartProduct & {
 
 type CartContextValue = {
   items: CartItem[];
+  isLoaded: boolean;
   itemCount: number;
   totalPrice: number;
   addToCart: (product: CartProduct) => void;
@@ -94,7 +95,7 @@ export function CartProvider({ children }: Readonly<{ children: React.ReactNode 
 
   return (
     <CartContext.Provider
-      value={{ items, itemCount, totalPrice, addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart }}
+      value={{ items, isLoaded, itemCount, totalPrice, addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart }}
     >
       {children}
     </CartContext.Provider>

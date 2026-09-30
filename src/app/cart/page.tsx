@@ -60,6 +60,9 @@ export default function CartPage() {
               <span>Total</span>
               <span className="text-pink-600">{totalPrice.toFixed(2)} EGP</span>
             </div>
+            <Link href="/checkout" className="block rounded-lg bg-pink-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-pink-700">
+              Proceed to Checkout
+            </Link>
             <Link href="/products" className="block text-center font-medium text-pink-600 hover:text-pink-700">
               Continue shopping
             </Link>

@@ -2,14 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingCart, User } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -34,8 +28,9 @@ export default function Navbar() {
           <Link
             key={link.href}
             href={link.href}
+            aria-current={pathname === link.href || pathname.startsWith(`${link.href}/`) ? "page" : undefined}
             className={`transition ${
-              pathname === link.href
+              pathname === link.href || pathname.startsWith(`${link.href}/`)
                 ? "text-pink-600 font-semibold border-b-2 border-pink-600"
                 : "hover:text-pink-600"
             }`}
@@ -56,27 +51,6 @@ export default function Navbar() {
           )}
         </Link>
 
-        {/* Profile Dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="hover:text-pink-600 transition">
-              <User className="w-6 h-6" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem>
-              <Link href="/profile" className="w-full">
-                My Profile
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href="/orders" className="w-full">
-                Orders
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600">Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </nav>
   );

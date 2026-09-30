@@ -4,30 +4,41 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import ApiState from "@/components/ApiState/ApiState";
+import type { Brand } from "@/types/api";
 
 export default function BrandDetailsPage() {
   const { id } = useParams();
-  const [brand, setBrand] = useState<any>(null);
+  const [brand, setBrand] = useState<Brand | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     async function getBrand() {
       try {
+        setLoading(true);
+        setError(false);
         const res = await fetch(`https://ecommerce.routemisr.com/api/v1/brands/${id}`);
+        if (!res.ok) throw new Error("Unable to load brand");
         const data = await res.json();
+        if (!data.data) throw new Error("Unable to load brand");
         setBrand(data.data);
       } catch (error) {
         console.error("Error fetching brand:", error);
+        setError(true);
       } finally {
         setLoading(false);
       }
     }
     if (id) getBrand();
-  }, [id]);
+  }, [id, retry]);
 
   if (loading) {
     return <p className="text-center py-10">Loading brand...</p>;
   }
+
+  if (error) return <ApiState message="We couldn’t load this brand. Please try again." onRetry={() => setRetry((value) => value + 1)} />;
 
   if (!brand) {
     return <p className="text-center py-10 text-red-500">Brand not found</p>;
@@ -58,11 +69,8 @@ export default function BrandDetailsPage() {
           We bring you the finest quality and most stylish designs.
         </p>
 
-        <Link
-          href={`/brands/${id}/products`}
-          className="px-6 py-3 bg-pink-600 text-white rounded-lg shadow hover:bg-pink-700 transition"
-        >
-          View Products
+        <Link href="/brands" className="px-6 py-3 bg-pink-600 text-white rounded-lg shadow hover:bg-pink-700 transition">
+          Back to Brands
         </Link>
       </div>
     </div>
