@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
 
 // Swiper imports
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -18,6 +19,7 @@ export default function ProductDetailsPage() {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     async function getProduct() {
@@ -95,7 +97,7 @@ export default function ProductDetailsPage() {
         <p className="text-gray-600 mb-4">{product.description}</p>
         <p className="text-pink-600 text-2xl font-bold mb-6">{product.price} EGP</p>
 
-        <Button className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3">
+        <Button onClick={() => addToCart(product)} className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3">
           Add to Cart
         </Button>
       </div>

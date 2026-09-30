@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingCart, User } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,7 @@ import {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { itemCount } = useCart();
 
   const links = [
     { href: "/products", label: "Products" },
@@ -45,8 +47,13 @@ export default function Navbar() {
 
       {/* Right Side */}
       <div className="flex items-center gap-4 text-gray-700">
-        <Link href="/cart" className="hover:text-pink-600 transition">
+        <Link href="/cart" aria-label={`Shopping cart, ${itemCount} items`} className="relative transition hover:text-pink-600">
           <ShoppingCart className="w-6 h-6" />
+          {itemCount > 0 && (
+            <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-pink-600 px-1 text-xs font-semibold text-white">
+              {itemCount}
+            </span>
+          )}
         </Link>
 
         {/* Profile Dropdown */}

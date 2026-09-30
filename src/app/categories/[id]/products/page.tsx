@@ -7,11 +7,13 @@ import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, ArrowLeft } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 export default function CategoryProductsPage() {
   const { id } = useParams();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     async function getProducts() {
@@ -93,7 +95,7 @@ export default function CategoryProductsPage() {
 
             {/* Footer */}
             <CardFooter className="p-4 pt-0">
-              <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white">
+              <Button onClick={() => addToCart(product)} className="w-full bg-pink-600 hover:bg-pink-700 text-white">
                 Add to Cart
               </Button>
             </CardFooter>
