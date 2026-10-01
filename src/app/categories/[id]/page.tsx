@@ -4,30 +4,41 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import ApiState from "@/components/ApiState/ApiState";
+import type { Category } from "@/types/api";
 
 export default function CategoryDetailsPage() {
   const { id } = useParams();
-  const [category, setCategory] = useState<any>(null);
+  const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     async function getCategory() {
       try {
+        setLoading(true);
+        setError(false);
         const res = await fetch(`https://ecommerce.routemisr.com/api/v1/categories/${id}`);
+        if (!res.ok) throw new Error("Unable to load category");
         const data = await res.json();
+        if (!data.data) throw new Error("Unable to load category");
         setCategory(data.data);
       } catch (error) {
         console.error("Error fetching category:", error);
+        setError(true);
       } finally {
         setLoading(false);
       }
     }
     if (id) getCategory();
-  }, [id]);
+  }, [id, retry]);
 
   if (loading) {
     return <p className="text-center py-10">Loading category...</p>;
   }
+
+  if (error) return <ApiState message="We couldn’t load this category. Please try again." onRetry={() => setRetry((value) => value + 1)} />;
 
   if (!category) {
     return <p className="text-center py-10 text-red-500">Category not found</p>;
