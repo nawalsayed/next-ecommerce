@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ShopSphere
 
-## Getting Started
+ShopSphere is a demo online store for discovering products, brands, and categories, with a locally saved cart and a demo checkout.
 
-First, run the development server:
+## Features
+
+- Home page with featured products, categories, and brands
+- Product, brand, and category listings
+- Product details with an image gallery
+- Shopping cart saved in the browser
+- Demo checkout with shipping details and Cash on Delivery or demo card selection
+- Order confirmation with a demo order summary
+
+## Tech stack
+
+- Next.js 15.5.2 with the App Router
+- React 19.1.0 and TypeScript 5
+- Tailwind CSS 4
+- Radix UI, class-variance-authority, clsx, and tailwind-merge
+- Swiper 12 for product image galleries
+- lucide-react icons
+
+Product, brand, and category data comes from the RouteMisr e-commerce API.
+
+## Screenshots
+
+Add screenshots to `docs/screenshots/` and update these placeholders:
+
+![ShopSphere home page](docs/screenshots/home.png)
+
+![ShopSphere products page](docs/screenshots/products.png)
+
+![ShopSphere checkout page](docs/screenshots/checkout.png)
+
+## Getting started
+
+### Requirements
+
+- Node.js compatible with Next.js 15
+- npm
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Environment variables
+
+No environment variables are required by the current project.
+
+### Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Other commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run build
+npm start
+```
 
-## Learn More
+## Demo checkout
 
-To learn more about Next.js, take a look at the following resources:
+Checkout is for demonstration only. No real payment is processed. The demo card fields are used only for client-side format validation and are not stored or sent to a payment service. Demo orders are saved in the browser's local storage.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Future improvements
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- User authentication
+- Order history
+- Real payment processing
+- Saved favorites
